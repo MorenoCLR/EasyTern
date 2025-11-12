@@ -1,18 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Easytern
 
-## Getting Started
+A Next.js project built with **Supabase** and deployed on **Vercel**.
 
-First, run the development server:
+This README will help you set up the project locally so everyone in the team can collaborate smoothly.
+
+## Tech Stack
+
+- **Frontend:** Next.js (React)  
+- **Backend / Database:** Supabase  
+- **Deployment:** Vercel  
+- **Package Manager:** npm
+
+## Prerequisites
+
+Make sure you have these installed:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Install Node.js (LTS version recommended)
+https://nodejs.org/
+
+# Check versions
+node -v
+npm -v
 ```
+## Installation
+
+Install EasyTern with npm
+
+```bash
+  cd easytern
+  npm install
+```
+    
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`NEXT_PUBLIC_SUPABASE_URL=key`
+`NEXT_PUBLIC_SUPABASE_ANON_KEY=key`
+`NEXT_PUBLIC_SITE_URL=http://localhost:3000`
+`NODE_ENV=development`
+
+Optional Server Only
+`SUPABASE_SERVICE_ROLE_KEY=key`
+
+
+## Deployment
+
+To deploy this project run
+
+```bash
+  npm run dev
+```
+
+## Next.JS Section
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
