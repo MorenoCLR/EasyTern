@@ -47,6 +47,25 @@ export function LoginForm({
     }
   };
 
+  // ----------------------------
+  // NEW: Google OAuth (client)
+  // ----------------------------
+  const handleGoogleSignIn = async () => {
+    setError(null);
+    try {
+      const supabase = createClient();
+      const redirectTo = `${window.location.origin}/auth/callback`;
+      // This will redirect the browser to Google's consent screen in the browser flow
+      await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo },
+      });
+      // no further code expected — browser should redirect
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : String(err));
+    }
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -91,6 +110,16 @@ export function LoginForm({
               {error && <p className="text-sm text-red-500">{error}</p>}
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Logging in..." : "Login"}
+              </Button>
+
+              {/* Google OAuth button */}
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full mt-2"
+                onClick={handleGoogleSignIn}
+              >
+                Continue with Google
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
