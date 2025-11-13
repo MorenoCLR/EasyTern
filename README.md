@@ -43,7 +43,7 @@ After installation of the Supabase integration, all relevant environment variabl
 
 The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#Installation).
 
 ## Installation
 
