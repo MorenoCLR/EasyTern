@@ -62,11 +62,7 @@ export function LoginForm({
     setError(null);
     try {
       const supabase = createClient();
-      const redirectTo =
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:3000/auth/callback"
-        : "https://easytern.vercel.app/auth/callback";
-
+      const redirectTo = `https://easytern.vercel.app/auth/callback`;
       // This will redirect the browser to Google's consent screen in the browser flow
       await supabase.auth.signInWithOAuth({
         provider: "google",
