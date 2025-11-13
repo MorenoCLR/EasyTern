@@ -55,74 +55,24 @@ export function LoginForm({
     }
   };
 
-  // 🔹 Google Sign-In setup
-  useEffect(() => {
-    const supabase = createClient();
-    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-
-    if (!clientId) {
-      console.warn("NEXT_PUBLIC_GOOGLE_CLIENT_ID is not set");
-      return;
-    }
-
-    // 1. Expose callback for Google
-    window.handleSignInWithGoogle = async (response: any) => {
-      setError(null);
-
-      const { data, error } = await supabase.auth.signInWithIdToken({
+  // ----------------------------
+  // NEW: Google OAuth (client)
+  // ----------------------------
+  const handleGoogleSignIn = async () => {
+    setError(null);
+    try {
+      const supabase = createClient();
+      const redirectTo = `${window.location.origin}/auth/callback`;
+      // This will redirect the browser to Google's consent screen in the browser flow
+      await supabase.auth.signInWithOAuth({
         provider: "google",
-        token: response.credential,
+        options: { redirectTo },
       });
-
-      if (error) {
-        console.error("Supabase Google login error:", error);
-        setError(error.message);
-        return;
-      }
-
-      router.push("/protected");
-    };
-
-    // 2. Wait until the Google script is available, then init + render
-    function initGoogle() {
-      if (!window.google?.accounts?.id) return;
-
-      window.google.accounts.id.initialize({
-        client_id: clientId,
-        callback: window.handleSignInWithGoogle,
-        context: "signin",
-        ux_mode: "popup",
-        use_fedcm_for_prompt: true,
-      });
-
-      // If you still want the button:
-      const btn = document.getElementById("google-signin-btn");
-      if (btn) {
-        window.google.accounts.id.renderButton(btn, {
-          type: "standard",
-          theme: "outline",
-          size: "large",
-          shape: "pill",
-          text: "signin_with",
-          logo_alignment: "left",
-        });
-      }
-
-      // 🔹 THIS is what actually shows One Tap
-      window.google.accounts.id.prompt();
+      // no further code expected — browser should redirect
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : String(err));
     }
-
-    // Try immediately, and also retry a bit in case script is slightly late
-    initGoogle();
-    const interval = setInterval(() => {
-      if (window.google?.accounts?.id) {
-        initGoogle();
-        clearInterval(interval);
-      }
-    }, 300);
-
-    return () => clearInterval(interval);
-  }, [router]);
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -168,6 +118,16 @@ export function LoginForm({
               {error && <p className="text-sm text-red-500">{error}</p>}
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Logging in..." : "Login"}
+              </Button>
+
+              {/* Google OAuth button */}
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full mt-2"
+                onClick={handleGoogleSignIn}
+              >
+                Continue with Google
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
