@@ -33,34 +33,60 @@ node -v
 npm -v
 ```
 
-## Deploy to Vercel
+## Project Setup
 
-Vercel deployment will guide you through creating a Supabase account and project.
-
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
-
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
-
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#Installation).
-
-## Installation
-
-Install EasyTern with npm
+Clone the repository
 
 ```bash
   git clone <repo-url>
   cd easytern
+```
+
+Install dependencies
+
+```bash
   npm install
 ```
     
-## Rename `.env.example` to `.env.local` and update the following:
+## Environment variables (`.env.local`)
+  This project uses Supabase, so you need some secret keys to run it.
+  
+  ### Manual Setup
+  In the repo, there should be a file named:
+
+  ```bash
+  .env.example
+  ```
+
+  Copy it and rename it to `.env.local`
+  Open `.env.local` in any editor and fill in the real values
 
   ```env
   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=[INSERT SUPABASE PROJECT API PUBLISHABLE OR ANON KEY]
   ```
+
+  ### Vercel CLI
+  Install Vercel CLU
+  ```bash
+  npm install -g vercel
+  ```
+
+  Log In
+  ```bash
+  vercel login
+  ```
+
+  Link the project
+  ```bash
+  vercel link
+  ```
+
+  Pull environment variables from Vercel
+  ```bash
+  vercel env pull .env.local
+  ```
+  
   > [!NOTE]
   > This example uses `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, which refers to Supabase's new **publishable** key format.
   > Both legacy **anon** keys and new **publishable** keys can be used with this variable name during the transition period. Supabase's dashboard may show `NEXT_PUBLIC_SUPABASE_ANON_KEY`; its value can be used in this example.
@@ -77,9 +103,32 @@ To start the project locally:
   npm run dev
 ```
 
-## Next.JS Section
+Then open:
+```
+  http://localhost:3000
+```
 
-The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+> [!NOTE]
+> The app should now be running. Any code changes you make will auto-refresh in the browser.
+
+## Deployments (What Vercel Does)
+
+You don’t need to manually deploy the app. Vercel is already connected to this GitHub repo.
+
+Every push to main -> `Production` deployment
+
+Live at:
+
+https://easy-tern.vercel.app`
+
+
+Every push to another branch / PR -> `Preview` deployment
+
+URL looks like:
+
+`https://easy-tern-<random>-morenoclrs-projects.vercel.app`
+
+These URLs are also used for Supabase Auth redirects.
 
 ## FAQ
 
