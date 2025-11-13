@@ -2,8 +2,6 @@
 
 A Next.js project built with **Supabase** and deployed on **Vercel**.
 
-This README will help you set up the project locally so everyone in the team can collaborate smoothly.
-
 ## Features
 
 - Works across the entire [Next.js](https://nextjs.org) stack
@@ -59,6 +57,7 @@ Install dependencies
   ```
 
   Copy it and rename it to `.env.local`
+  
   Open `.env.local` in any editor and fill in the real values
 
   ```env
