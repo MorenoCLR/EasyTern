@@ -50,6 +50,7 @@ If you wish to just develop locally and not deploy to Vercel, [follow the steps 
 Install EasyTern with npm
 
 ```bash
+  git clone <repo-url>
   cd easytern
   npm install
 ```
