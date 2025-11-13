@@ -7,6 +7,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -14,7 +15,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+// Types for global objects (optional but nice for TS)
+declare global {
+  interface Window {
+    handleSignInWithGoogle?: (response: any) => Promise<void>;
+    google?: any;
+  }
+}
 
 export function LoginForm({
   className,
@@ -38,7 +47,6 @@ export function LoginForm({
         password,
       });
       if (error) throw error;
-      // Update this route to redirect to an authenticated route. The user already has an active session.
       router.push("/protected");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
@@ -46,6 +54,75 @@ export function LoginForm({
       setIsLoading(false);
     }
   };
+
+  // 🔹 Google Sign-In setup
+  useEffect(() => {
+    const supabase = createClient();
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+
+    if (!clientId) {
+      console.warn("NEXT_PUBLIC_GOOGLE_CLIENT_ID is not set");
+      return;
+    }
+
+    // 1. Expose callback for Google
+    window.handleSignInWithGoogle = async (response: any) => {
+      setError(null);
+
+      const { data, error } = await supabase.auth.signInWithIdToken({
+        provider: "google",
+        token: response.credential,
+      });
+
+      if (error) {
+        console.error("Supabase Google login error:", error);
+        setError(error.message);
+        return;
+      }
+
+      router.push("/protected");
+    };
+
+    // 2. Wait until the Google script is available, then init + render
+    function initGoogle() {
+      if (!window.google?.accounts?.id) return;
+
+      window.google.accounts.id.initialize({
+        client_id: clientId,
+        callback: window.handleSignInWithGoogle,
+        context: "signin",
+        ux_mode: "popup",
+        use_fedcm_for_prompt: true,
+      });
+
+      // If you still want the button:
+      const btn = document.getElementById("google-signin-btn");
+      if (btn) {
+        window.google.accounts.id.renderButton(btn, {
+          type: "standard",
+          theme: "outline",
+          size: "large",
+          shape: "pill",
+          text: "signin_with",
+          logo_alignment: "left",
+        });
+      }
+
+      // 🔹 THIS is what actually shows One Tap
+      window.google.accounts.id.prompt();
+    }
+
+    // Try immediately, and also retry a bit in case script is slightly late
+    initGoogle();
+    const interval = setInterval(() => {
+      if (window.google?.accounts?.id) {
+        initGoogle();
+        clearInterval(interval);
+      }
+    }, 300);
+
+    return () => clearInterval(interval);
+  }, [router]);
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -104,6 +181,12 @@ export function LoginForm({
             </div>
           </form>
         </CardContent>
+
+        {/* Auth section with placeholder div */}
+        <CardFooter className="flex flex-col items-center gap-4">
+          <CardTitle className="text-lg">OAuth</CardTitle>
+          <div id="google-signin-btn" />
+        </CardFooter>
       </Card>
     </div>
   );
