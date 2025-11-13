@@ -69,9 +69,9 @@ Install EasyTern with npm
   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
 
 
-## Deployment
+## Local Development
 
-To deploy this project run
+To start the project locally:
 
 ```bash
   npm run dev
