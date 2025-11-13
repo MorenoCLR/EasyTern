@@ -66,8 +66,8 @@ Install dependencies
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=[INSERT SUPABASE PROJECT API PUBLISHABLE OR ANON KEY]
   ```
 
-  ### Vercel CLI
-  Install Vercel CLU
+  ### Vercel CLI Setup
+  Install Vercel CLI
   ```bash
   npm install -g vercel
   ```
@@ -86,7 +86,7 @@ Install dependencies
   ```bash
   vercel env pull .env.local
   ```
-  
+
   > [!NOTE]
   > This example uses `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, which refers to Supabase's new **publishable** key format.
   > Both legacy **anon** keys and new **publishable** keys can be used with this variable name during the transition period. Supabase's dashboard may show `NEXT_PUBLIC_SUPABASE_ANON_KEY`; its value can be used in this example.
