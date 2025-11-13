@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // Types for global objects (optional but nice for TS)
 declare global {
@@ -141,12 +141,6 @@ export function LoginForm({
             </div>
           </form>
         </CardContent>
-
-        {/* Auth section with placeholder div */}
-        <CardFooter className="flex flex-col items-center gap-4">
-          <CardTitle className="text-lg">OAuth</CardTitle>
-          <div id="google-signin-btn" />
-        </CardFooter>
       </Card>
     </div>
   );

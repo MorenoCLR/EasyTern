@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
-import Script from "next/script";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -27,13 +26,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased`}>
-        
-        {/* Google Identity Services */}
-        <Script
-          src="https://accounts.google.com/gsi/client"
-          strategy="afterInteractive"
-        />
-
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
